@@ -1,0 +1,12 @@
+name: Deploy Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  call-review-pipeline:
+    uses: ./.github/workflows/review-pipeline.yaml
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
