@@ -26,7 +26,7 @@ The following details the design of the API
 The full openapi spec is available at [./openapi.yaml](./openapi.yaml)
 
 # Solution Design
-In order to minimize boilerplate code especially when it comes to managing routes, I decided to go with a dockerized FastAPI solution which is a familiar and performant python api framework. The solution can be easily dockerized and deployed to any containerization platform. The application is divied into **routes** and a **service** which serves as a domain object, sitting between the routing system and the database
+In order to minimize boilerplate code especially when it comes to managing routes, going with a FastAPI solution which is a familiar and performant python api framework can be quite practical. The solution can be dockerized and deployed to any containerization platform. The application is divided into **routes** and a **service** which serves as a domain object, sitting between the routing system and the database
 
 ## On choice for an In Memory Database
 For a simple project like this, an in memory database can facilitate development and testing. The database persistence layer is built around the **Repository Pattern** which ensures that changes in database technology can handled in the future. This allows us to focus on the core ideas of the solution and not get too bogged down in the details. Because of the use of a supporting interface, the move to any specific database technology can easily be handled by adding a new Repository for say 'DyanamoDB' or 'Postgres'
@@ -65,7 +65,8 @@ This assumes that you have setup AWS Credentials with enough rights to deploy th
 * You can use Postman(the openapi spec may help here), or AWS API Gateway to test the endpoints
 
 # Some thoughts
-This was a generally fulfilling exercise for Cloud based development, I got to build  a testable API in a dockerized Python environment. Being that I am quite new to terraform, I spent a considerable amount of time figuring out its kinks but the experience was rewarding. GitHub actions was a bit of a disappointment. Eventhough I enjoyed working with it I was not able to use it as I had hoped. I intended to have a CICD pipeline (see [workflows](/.github/workflows/)) in GHA deploy the resources using terraform to AWS, but the terraform related tasks just took too long and I had to abandon it due to practicality reasons. Between the routes, docker and API Gateway, making the final deploy to a website was also quite challenging, but I am happy to have completed it.
+TThis was a generally fulfilling exercise for Cloud based development. Being that I am quite new to terraform, I spent a considerable amount of time figuring out its kinks but the experience was rewarding. GitHub actions was a bit of a disappointment. Eventhough I enjoyed working with it I was not able to use it as I had hoped. I intended to have a CICD pipeline in GHA deploy the resources using terraform to AWS, but the terraform related tasks just took too long and I had to abandon it due to practicality reasons. Between the routes, docker and API Gateway's terraform, making the final deploy to a website was also quite challenging, but I am happy to have completed it.
+
 ## Improvements
 * Metrics to CW Metrics could be added to this solution
 * Github Action to automate CICD
