@@ -34,6 +34,7 @@ resource "aws_iam_policy" "lambda_custom_policy" {
       {
         Effect = "Allow",
         Action = [
+          "logs:CreateLogGroup",
           "logs:CreateLogStream",
           "logs:PutLogEvents"
         ],
