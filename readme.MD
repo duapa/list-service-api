@@ -26,7 +26,7 @@ The following details the design of the API
 The full openapi spec is available at [./openapi.yaml](./openapi.yaml)
 
 # Solution Design
-In order to minimize boilerplate code especially when it comes to managing routes, I decided to go with a dockerized FastAPI solution which is a familiar and performant python api framework. The solution can be easily dockerized and deployed to any containerization platform. The application is divied into **routes** and a **service** which serves as a domain object, sitting between the routing system and the database
+In order to minimize boilerplate code especially when it comes to managing routes, going with a FastAPI solution which is a familiar and performant python api framework can be quite practical. The solution can be dockerized and deployed to any containerization platform. The application is divided into **routes** and a **service** which serves as a domain object, sitting between the routing system and the database
 
 ## On choice for an In Memory Database
 For a simple project like this, an in memory database can facilitate development and testing. The database persistence layer is built around the **Repository Pattern** which ensures that changes in database technology can handled in the future. This allows us to focus on the core ideas of the solution and not get too bogged down in the details. Because of the use of a supporting interface, the move to any specific database technology can easily be handled by adding a new Repository for say 'DyanamoDB' or 'Postgres'
