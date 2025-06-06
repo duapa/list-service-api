@@ -1,5 +1,6 @@
 from pydantic import ValidationError as PydanticValidationError
 
+from app.common import logger
 from app.models import PostValue
 from app.repository.base_repository import BaseRepository, DBError, DBItemNotFoundError
 
@@ -34,34 +35,37 @@ class ItemsService:
 
     def list(self):
         try:
+            logger.info("Listing all items")
             return self.items_repository.list()
         except DBError as e:
-            # TODO: log DB error
             err_msg = f"Database error occurred: {str(e)}"
+            logger.error(err_msg)
             raise ServerError(err_msg) from e
         except Exception as e:
-            # TODO: log unexpected error
             err_msg = f"An unexpected error occurred: {str(e)}"
+            logger.error(err_msg)
             raise ServerError(err_msg) from e
 
     def get_item_by_id(self, item_id: str):
         if not item_id:
+            logger.info(f"Getting item {item_id}")
             raise ValidationError("Item ID must be provided.")
         try:
             return self.items_repository.get_by_id(item_id)
         except DBItemNotFoundError as e:
-            # TODO: log item not found error
+            logger.error(str(e))
             raise ItemNotFoundError(item_id) from e
         except DBError as e:
-            # TODO: log DB error
             err_msg = f"Database error occurred: {str(e)}"
+            logger.error(err_msg)
             raise ServerError(err_msg) from e
         except Exception as e:
-            # TODO: log unexpected error
             err_msg = f"An unexpected error occurred: {str(e)}"
+            logger.error(err_msg)
             raise ServerError(err_msg) from e
 
     def add_item(self, input_data: dict[str, str]):
+        logger.info(f"Adding data from {input_data}")
         try:
             # Validate the item_data against PostValue model
             item = PostValue(**input_data)
@@ -71,19 +75,23 @@ class ItemsService:
             err_msg = "Invalid input data: "
             err_msg += "expected data in the format: {'value': 'string'}"
             err_msg += f" but got: {input_data}"
+            logger.error(err_msg)
             raise ValidationError(err_msg) from e
         except DBError as e:
-            # TODO: log DB error
             err_msg = f"Database error occurred: {str(e)}"
+            logger.error(err_msg)
             raise ServerError(err_msg) from e
         except Exception as e:
-            # TODO: log unexpected error
             err_msg = f"An unexpected error occurred: {str(e)}"
+            logger.error(err_msg)
             raise ServerError(err_msg) from e
 
     def update_item(self, item_id: str, input_data: dict[str, str]):
+        logger.info(f"Update operation body: {input_data}, item_id: {item_id}")
         if not item_id:
-            raise ValidationError("Item ID must be provided for update.")
+            err_msg = "Item ID must be provided for update."
+            logger.error(err_msg)
+            raise ValidationError(err_msg)
         try:
             # Validate the item_data against PutValue model
             item = PostValue(**input_data)
@@ -92,67 +100,67 @@ class ItemsService:
             err_msg = "Invalid input data: "
             err_msg += f"expected data in the format: {'value': 'string'}"
             err_msg += f" but got: {input_data.__dict__}"
+            logger.error(err_msg)
             raise ValidationError(err_msg) from e
         except DBItemNotFoundError as e:
+            logger.error(f"On update, item id; '{item_id}' was not found")
             raise ItemNotFoundError(item_id) from e
         except DBError as e:
-            # TODO: log DB error
             err_msg = f"Database error occurred: {str(e)}"
+            logger.error(err_msg)
             raise ServerError(err_msg) from e
         except Exception as e:
-            # TODO: log unexpected error
             err_msg = f"An unexpected error occurred: {str(e)}"
+            logger.error(err_msg)
             raise ServerError(err_msg) from e
 
     def delete_item(self, item_id: str):
         if not item_id:
-            raise ValidationError("Item ID must be provided for deletion.")
+            err_msg = "Item ID must be provided for deletion. Received None"
+            logger.error(err_msg)
+            raise ValidationError(err_msg)
         try:
             return self.items_repository.delete(item_id)
         except DBItemNotFoundError as e:
+            logger.error(f"On delete, item id; '{item_id}' was not found")
             raise ItemNotFoundError(item_id) from e
         except DBError as e:
-            # TODO: log DB error
             err_msg = f"Database error occurred: {str(e)}"
+            logger.error(err_msg)
             raise ServerError(err_msg) from e
         except Exception as e:
-            # TODO: log unexpected error
             err_msg = f"An unexpected error occurred: {str(e)}"
+            logger.error(err_msg)
             raise ServerError(err_msg) from e
 
     def head(self, n: int):
         if n <= 0:
-            raise ValidationError(
-                "The number of items to return must be greater than zero."
-            )
+            err_msg = "head: The number of items to return must be greater than zero."
+            logger.error(err_msg)
+            raise ValidationError(err_msg)
         try:
             return self.items_repository.head(n)
         except DBError as e:
-            # TODO: log DB error
             err_msg = f"Database error occurred: {str(e)}"
+            logger.error(err_msg)
             raise ServerError(err_msg) from e
         except Exception as e:
-            # TODO: log unexpected error
-
             err_msg = f"An unexpected error occurred: {str(e)}"
-            # For debugging purposes
+            logger.error(err_msg)
             raise ServerError(err_msg) from e
 
     def tail(self, n: int):
         if n <= 0:
-            raise ValidationError(
-                "The number of items to return must be greater than zero."
-            )
+            err_msg = "tail: The number of items to return must be greater than zero."
+            raise ValidationError(err_msg)
         try:
             return self.items_repository.tail(n)
         except DBError as e:
-            # TODO: log DB error
-
             err_msg = f"Database error occurred: {str(e)}"
+            logger.error(err_msg)
             raise ServerError(err_msg) from e
         except Exception as e:
-            # TODO: log unexpected error
-
             err_msg = f"An unexpected error occurred: {str(e)}"
+            logger.error(err_msg)
 
             raise ServerError(err_msg) from e

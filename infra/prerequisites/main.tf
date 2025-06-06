@@ -25,6 +25,12 @@ resource "aws_cloudwatch_log_group" "lambda_log_group" {
 }
 
 
+resource "aws_cloudwatch_log_stream" "lambda_log_stream" {
+  log_group_name = aws_cloudwatch_log_group.lambda_log_group.name
+  name="list_service_log_stream"
+}
+
+
 resource "aws_iam_policy" "lambda_custom_policy" {
   name = "${var.env}_lambda_exec_policy"
 
