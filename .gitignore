@@ -222,3 +222,5 @@ override.tf.json
 
 # Provider override lock file
 .terraform.lock.hcl
+
+deploy_aws_resources_local.sh
