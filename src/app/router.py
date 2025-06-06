@@ -63,7 +63,7 @@ async def get_item(
 
 
 @router.post("/items")
-def add_item(
+async def add_item(
     input_data: PostValue, service: Annotated[ItemsService, Depends(get_items_service)]
 ):
     try:
@@ -86,7 +86,7 @@ def add_item(
 
 
 @router.put("/items/{item_id}")
-def update_item(
+async def update_item(
     item_id: str,
     input_data: PostValue,
     service: Annotated[ItemsService, Depends(get_items_service)],
@@ -118,7 +118,7 @@ def update_item(
 
 
 @router.delete("/items/{item_id}")
-def delete_item(
+async def delete_item(
     item_id: str, service: Annotated[ItemsService, Depends(get_items_service)]
 ):
     try:
@@ -140,8 +140,8 @@ def delete_item(
         )
 
 
-@router.get("/items/tail/")
-def get_tail_items(
+@router.get("/tail")
+async def get_tail_items(
     service: Annotated[ItemsService, Depends(get_items_service)],
     num_samples: int = Query(10, ge=1),
 ):
@@ -164,8 +164,8 @@ def get_tail_items(
         )
 
 
-@router.get("/items/head/")
-def get_head_items(
+@router.get("/head")
+async def get_head_items(
     service: Annotated[ItemsService, Depends(get_items_service)],
     num_samples: int = Query(10, ge=1),
 ):

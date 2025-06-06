@@ -190,3 +190,49 @@ def test_faulty_db_add_invalid_item_expect_422(faulty_db_client):
     """Test to ensure an error is raised when adding an item with invalid data."""
     response = faulty_db_client.post("/items/", json={"invalid_field": "InvalidValue"})
     assert response.status_code == 422
+
+
+def test_tail_endpoint(client):
+    response = client.get("/tail?num_samples=3")
+    results_list = response.json()
+    assert response.status_code == 200
+    expected = ["String3", "String2", "String1"]
+    collected = [item["value"] for item in results_list]
+    assert expected == collected
+
+
+def test_head_endpoint(client):
+    response = client.get("/head?num_samples=3")
+    results_list = response.json()
+    assert response.status_code == 200
+    expected = ["String1", "String2", "String3"]
+    collected = [item["value"] for item in results_list]
+    assert expected == collected
+
+
+def test_head_endpoint_sample_size_greater_than_list_len(client):
+    response = client.get("/head?num_samples=5")
+    results_list = response.json()
+    assert response.status_code == 200
+    expected = ["String1", "String2", "String3"]
+    collected = [item["value"] for item in results_list]
+    assert expected == collected
+
+
+def test_tail_endpoint_sample_size_greater_than_list_len(client):
+    response = client.get("/tail?num_samples=5")
+    results_list = response.json()
+    assert response.status_code == 200
+    expected = ["String3", "String2", "String1"]
+    collected = [item["value"] for item in results_list]
+    assert expected == collected
+
+
+def test_tail_endpoint_sample_size_zero_raises_422(client):
+    response = client.get("/tail?num_samples=0")
+    assert response.status_code == 422
+
+
+def test_head_endpoint_sample_size_zero_raises_422(client):
+    response = client.get("/head?num_samples=0")
+    assert response.status_code == 422

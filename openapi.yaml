@@ -1,0 +1,201 @@
+openapi: 3.1.0
+info:
+  title: Stings API
+  description: API for managing a collection of strings
+  version: 1.0.0
+paths:
+  /items:
+    get:
+      summary: Get Items
+      operationId: get_items_items_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+    post:
+      summary: Add Item
+      operationId: add_item_items_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostValue'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  '/items/{item_id}':
+    get:
+      summary: Get Item
+      operationId: get_item_items__item_id__get
+      parameters:
+        - name: item_id
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Item Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      summary: Update Item
+      operationId: update_item_items__item_id__put
+      parameters:
+        - name: item_id
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Item Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostValue'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      summary: Delete Item
+      operationId: delete_item_items__item_id__delete
+      parameters:
+        - name: item_id
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Item Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /tail:
+    get:
+      summary: Get Tail Items
+      operationId: get_tail_items_tail_get
+      parameters:
+        - name: num_samples
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 10
+            title: Num Samples
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /head:
+    get:
+      summary: Get Head Items
+      operationId: get_head_items_head_get
+      parameters:
+        - name: num_samples
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 10
+            title: Num Samples
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PostValue:
+      properties:
+        value:
+          type: string
+          title: Value
+      type: object
+      required:
+        - value
+      title: PostValue
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+        - loc
+        - msg
+        - type
+      title: ValidationError

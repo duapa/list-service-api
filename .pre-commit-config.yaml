@@ -27,5 +27,6 @@ repos:
         - httpx
         - pydantic
         - pydantic-settings
+        - aws_lambda_powertools
         types: [python]
         pass_filenames: false
