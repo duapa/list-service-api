@@ -133,8 +133,9 @@ class ItemsService:
             raise ServerError(err_msg) from e
         except Exception as e:
             # TODO: log unexpected error
+
             err_msg = f"An unexpected error occurred: {str(e)}"
-            print(err_msg)  # For debugging purposes
+            # For debugging purposes
             raise ServerError(err_msg) from e
 
     def tail(self, n: int):
@@ -146,10 +147,12 @@ class ItemsService:
             return self.items_repository.tail(n)
         except DBError as e:
             # TODO: log DB error
+
             err_msg = f"Database error occurred: {str(e)}"
             raise ServerError(err_msg) from e
         except Exception as e:
             # TODO: log unexpected error
+
             err_msg = f"An unexpected error occurred: {str(e)}"
-            print(err_msg)
+
             raise ServerError(err_msg) from e

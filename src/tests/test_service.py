@@ -147,3 +147,41 @@ def test_list_items_db_unexpected_error(faulty_db_unexpected_error_repository):
     with pytest.raises(ServerError) as exc_info:
         service.list()
     assert "An unexpected error occurred" in str(exc_info.value)
+
+
+def test_head(items_service):
+    results = items_service.head(3)
+    expected = ["String1", "String2", "String3"]
+    values = [item["value"] for item in results]
+    assert values == expected
+
+
+def test_tail(items_service):
+    results = items_service.tail(3)
+    expected = ["String3", "String2", "String1"]
+    values = [item["value"] for item in results]
+    assert values == expected
+
+
+def test_head_sample_count_greater_than_list_len(items_service):
+    results = items_service.head(5)
+    expected = ["String1", "String2", "String3"]
+    values = [item["value"] for item in results]
+    assert values == expected
+
+
+def test_tail_sample_count_greater_than_list_len(items_service):
+    results = items_service.tail(3)
+    expected = ["String3", "String2", "String1"]
+    values = [item["value"] for item in results]
+    assert values == expected
+
+
+def test_head_sample_assert_sample_count_zero_raises_validation_error(items_service):
+    with pytest.raises(ValidationError):
+        _ = items_service.head(0)
+
+
+def test_tail_sample_assert_sample_count_zero_raises_validation_error(items_service):
+    with pytest.raises(ValidationError):
+        _ = items_service.tail(0)

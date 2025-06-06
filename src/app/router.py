@@ -140,7 +140,7 @@ def delete_item(
         )
 
 
-@router.get("/items/tail/")
+@router.get("/tail/")
 def get_tail_items(
     service: Annotated[ItemsService, Depends(get_items_service)],
     num_samples: int = Query(10, ge=1),
@@ -164,7 +164,7 @@ def get_tail_items(
         )
 
 
-@router.get("/items/head/")
+@router.get("/head/")
 def get_head_items(
     service: Annotated[ItemsService, Depends(get_items_service)],
     num_samples: int = Query(10, ge=1),
